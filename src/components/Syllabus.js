@@ -7,30 +7,25 @@ export default function Syllabus() {
     const [subjects, setSubject] = useState([]);
     const [searchTerm, setSearchTerm] = useState("");
 
-    // State lưu thông tin user đăng nhập
     const [user, setUser] = useState(null);
 
     useEffect(() => {
-        // Lấy thông tin user đã lưu ở localStorage khi đăng nhập thành công
         const savedUser = localStorage.getItem("user");
         if (savedUser) {
             setUser(JSON.parse(savedUser));
         }
 
-        // Lấy danh sách môn học
         fetch("http://localhost:9000/subjects")
             .then(response => response.json())
             .then(result => setSubject(result))
             .catch(err => console.error(err));
     }, []);
 
-    // Xử lý đăng xuất
     const handleLogout = () => {
         localStorage.removeItem("user");
         navigate("/login");
     };
 
-    // Tìm kiếm môn học theo Tên hoặc Mã môn
     const filterSubjects = subjects.filter(s => {
         const matchesName = s.name.toLowerCase().startsWith(searchTerm.toLowerCase());
         const matchesCode = s.code.toLowerCase().startsWith(searchTerm.toLowerCase());
@@ -39,13 +34,11 @@ export default function Syllabus() {
 
     return (
         <div>
-            {/* Header / Navbar */}
             <Navbar style={{ backgroundColor: "orange" }} variant="dark" className="px-4 mb-4">
                 <Navbar.Brand>
                     <strong>FPT Education Learning Material Portal</strong>
                 </Navbar.Brand>
 
-                {/* Hiển thị "Hello, ABCD" ở góc tận cùng bên phải nhờ class "ms-auto" */}
                 <div className="ms-auto text-white d-flex align-items-center">
                     {user ? (
                         <>
