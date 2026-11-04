@@ -1,13 +1,18 @@
 import React, { useEffect, useState } from "react";
 import { Button, Col, Container, Navbar, Row, Table, Form } from "react-bootstrap";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 
 export default function Syllabus() {
     const navigate = useNavigate();
     const [subjects, setSubject] = useState([]);
-    const [searchTerm, setSearchTerm] = useState("");
+    // const [searchTerm, setSearchTerm] = useState("");
 
     const [user, setUser] = useState(null);
+
+    const [searchParams, setSearchParams] = useSearchParams();
+    const searchTerm = searchParams.get("name") || "";
+
+
 
     useEffect(() => {
         const savedUser = localStorage.getItem("user");
@@ -72,7 +77,14 @@ export default function Syllabus() {
                             type="text"
                             placeholder="Enter keyword..."
                             value={searchTerm}
-                            onChange={(e) => setSearchTerm(e.target.value)}
+                            onChange={(e) => {
+                                if (e.target.value) {
+                                    searchParams.set("name", e.target.value); // Có chữ thì gắn ?title=... lên URL
+                                } else {
+                                    searchParams.delete("name"); // Xóa hết chữ thì xóa ?title trên URL
+                                }
+                                setSearchParams(searchParams); // Cập nhật lại URL
+                            }}
                         />
                     </Col>
                 </Row>
