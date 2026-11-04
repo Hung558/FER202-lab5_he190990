@@ -10,14 +10,32 @@ export default function Login() {
 
     const handleLogin = (e) => {
         e.preventDefault();
-        navigate("/syllabus");
+
+        fetch("http://localhost:9000/accounts")
+            .then((res) => res.json())
+            .then((accounts) => {
+                const user = accounts.find(
+                    (acc) => acc.email === email && acc.password === password
+                );
+
+                if (user) {
+                    localStorage.setItem("user", JSON.stringify(user));
+                    navigate("/syllabus");
+                } else {
+                    alert("Email hoặc mật khẩu không chính xác!");
+                }
+            })
+            .catch((err) => {
+                console.error(err);
+                alert("Lỗi kết nối server! Hãy chắc chắn json-server đang chạy ở port 9000.");
+            });
     };
 
     return (
         <Container className="d-flex justify-content-center align-items-center" style={{ minHeight: "80vh" }}>
             <Row className="w-100 justify-content-center">
                 <Col md={5}>
-                    <Card>
+                    <Card className="shadow-sm">
 
                         <Card.Body>
                             <Form onSubmit={handleLogin}>
@@ -28,6 +46,7 @@ export default function Login() {
                                         placeholder="Nhập email..."
                                         value={email}
                                         onChange={(e) => setEmail(e.target.value)}
+                                        required
                                     />
                                 </Form.Group>
 
@@ -38,6 +57,7 @@ export default function Login() {
                                         placeholder="Nhập password..."
                                         value={password}
                                         onChange={(e) => setPassword(e.target.value)}
+                                        required
                                     />
                                 </Form.Group>
 

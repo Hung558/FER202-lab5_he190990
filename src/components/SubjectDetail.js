@@ -15,8 +15,14 @@ export default function SubjectDetail() {
     const [description, setDescription] = useState("");
 
     const [error, setError] = useState("");
+    const [user, setUser] = useState(null);
 
     useEffect(() => {
+        const savedUser = localStorage.getItem("user");
+        if (savedUser) {
+            setUser(JSON.parse(savedUser));
+        }
+
         fetch("http://localhost:9000/subjects")
             .then((response) => {
                 if (!response.ok) {
@@ -63,6 +69,11 @@ export default function SubjectDetail() {
                 <Navbar.Brand>
                     <strong>Subject Detail Management</strong>
                 </Navbar.Brand>
+                {user && (
+                    <div className="ms-auto text-white fw-bold">
+                        Hello, {user.fullName}
+                    </div>
+                )}
             </Navbar>
 
             <Container className="pb-5">
