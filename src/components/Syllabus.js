@@ -79,11 +79,11 @@ export default function Syllabus() {
                             value={searchTerm}
                             onChange={(e) => {
                                 if (e.target.value) {
-                                    searchParams.set("name", e.target.value); // Có chữ thì gắn ?title=... lên URL
+                                    searchParams.set("name", e.target.value); 
                                 } else {
-                                    searchParams.delete("name"); // Xóa hết chữ thì xóa ?title trên URL
+                                    searchParams.delete("name"); 
                                 }
-                                setSearchParams(searchParams); // Cập nhật lại URL
+                                setSearchParams(searchParams);
                             }}
                         />
                     </Col>
